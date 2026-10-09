@@ -1,0 +1,26 @@
+services:
+  app:
+    build: .
+    ports:
+      - "127.0.0.1:3001:3001"
+    environment:
+      DEMO_MODE: "true"
+      DATABASE_URL: sqlite:/app/data/smart-savdo.sqlite
+      APP_URL: http://localhost:3001
+      WEB_APP_URL: http://localhost:3001
+    volumes:
+      - savdo-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://localhost:3001/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+volumes:
+  savdo-data:

@@ -1,0 +1,58 @@
+# Run separately: docker compose -f compose.production.yaml up --build -d
+# .env must contain POSTGRES_PASSWORD, JWT_SECRET and an HTTPS APP_URL.
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: savdo
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD securely}
+      POSTGRES_DB: savdo
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U savdo -d savdo"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+  app:
+    build: .
+    ports:
+      - "127.0.0.1:3001:3001"
+    environment:
+      DEMO_MODE: "false"
+      DATABASE_URL: postgresql://savdo:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@postgres:5432/savdo
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET, at least 32 characters}
+      APP_URL: ${APP_URL:?Set public HTTPS APP_URL}
+      WEB_APP_URL: ${WEB_APP_URL:-${APP_URL}}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://localhost:3001/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+  bot:
+    profiles: ["telegram"]
+    build: .
+    command: ["npm", "run", "bot"]
+    environment:
+      DEMO_MODE: "false"
+      DATABASE_URL: postgresql://savdo:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@postgres:5432/savdo
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      WEB_APP_URL: ${WEB_APP_URL:-${APP_URL}}
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: unless-stopped
+volumes:
+  postgres-data:
