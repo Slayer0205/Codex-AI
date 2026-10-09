@@ -44,6 +44,7 @@ export function createApp(
   const app = express();
   const business = new Business(db);
   const telegram = options.telegram || notificationAdapter();
+  if (process.env.TRUST_PROXY === "1") app.set("trust proxy", 1);
   app.disable("x-powered-by");
   app.use(
     helmet({

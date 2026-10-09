@@ -105,9 +105,15 @@ Public deployment uchun HTTPS reverse proxy/TLS, ruxsat etilgan APP_URL/WEB_APP_
 
 Token bo‘lmasa `npm run bot` mock menyu va demo xulosasini tekshirib chiqadi, Telegram’ga hech narsa yubormaydi. API esa normal demo ishlayveradi.
 
-Webhook kerak bo‘lsa `TELEGRAM_MODE=webhook`, `TELEGRAM_WEBHOOK_SECRET`, HTTPS APP_URL/WEB_APP_URL va BOT_PORT (3002) sozlang. Reverse proxy `/telegram/webhook` ni bot portiga yo‘naltirsin. grammY `secret_token` headerini tekshiradi. Polling va webhookni bir token uchun bir vaqtda ishlatmang.
+Webhook kerak bo‘lsa `TELEGRAM_MODE=webhook`, 32–256 belgili `TELEGRAM_WEBHOOK_SECRET` (harf, raqam, `_`, `-`) va HTTPS APP_URL/WEB_APP_URL sozlang. `npm start` botni web ilova bilan bir portda ishga tushiradi: `/telegram/webhook` endpointi Telegram maxfiy headerini tekshiradi. Bu rejimda alohida `npm run bot` kerak emas. Eski alohida webhook jarayoni kerak bo‘lsa `npm run bot` va BOT_PORT (3002) ishlatilishi mumkin; reverse proxy endpointni o‘sha portga yo‘naltirsin. Bir token uchun bir vaqtning o‘zida faqat bitta webhook xizmatini yoki polling jarayonini ishlating.
 
 API ichidagi worker har 15 soniyada yozilgan savdo bildirishnomalarini jo‘natadi. Yetkazish **at-most-once**: noaniq xatodan so‘ng avtomatik qayta yuborilmaydi, chunki Telegram idempotency kalitini qabul qilmaydi. `sending` holatida qolgan yozuvlar operator tekshiruvini talab qiladi. Qarz uchun avtomatik muddatli eslatmalar hozir yoqilmagan; qarz daftaridagi eslatma tugmasi ishlaydi.
+
+## Bepul HTTPS hosting
+
+[Render’da joylashtirish](https://render.com/deploy?repo=https://github.com/Slayer0205/Codex-AI) — repodagi `render.yaml` Blueprint web ilova va Telegram webhook botini bitta bepul xizmatda ishga tushiradi. Neon Free PostgreSQL bazasining connection string’i va BotFather tokeni kerak. Ommaviy demo kirishi o‘chiriladi, JWT va webhook sirlari Render’da avtomatik yaratiladi, HTTPS manzili `RENDER_EXTERNAL_URL` dan olinadi.
+
+Bosqichma-bosqich Windows ko‘rsatmasi: [docs/FREE-HOSTING.md](docs/FREE-HOSTING.md). Bepul Render xizmati foydalanilmaganda uxlaydi; saytning birinchi ochilishi yoki Telegram javobi kechikishi mumkin. Bu cheklovsiz, doim uyg‘oq 24/7 xizmat kafolati emas. Providerlarning joriy limitlari va narxlarini o‘z dashboardlarida tekshiring.
 
 ## Docker
 
