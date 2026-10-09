@@ -1,4 +1,4 @@
-import { timingSafeEqual } from "node:crypto";
+import { createHash, timingSafeEqual } from "node:crypto";
 import { webhookCallback } from "grammy";
 import type { Express } from "express";
 import type { createTelegramBot } from "../bot/bot.js";
@@ -6,11 +6,14 @@ import type { createTelegramBot } from "../bot/bot.js";
 type TelegramBot = ReturnType<typeof createTelegramBot>;
 
 function settings() {
-  const secret = process.env.TELEGRAM_WEBHOOK_SECRET || "";
-  if (!/^[A-Za-z0-9_-]{32,256}$/.test(secret))
-    throw new Error(
-      "TELEGRAM_WEBHOOK_SECRET must be 32-256 letters, digits, underscores or hyphens",
-    );
+  const configuredSecret = process.env.TELEGRAM_WEBHOOK_SECRET || "";
+  if (configuredSecret.length < 32 || configuredSecret.length > 256)
+    throw new Error("TELEGRAM_WEBHOOK_SECRET must contain 32-256 characters");
+  // Hosting-generated secrets can contain base64 punctuation. Telegram accepts
+  // only letters, digits, underscores and hyphens in secret_token.
+  const secret = /^[A-Za-z0-9_-]+$/.test(configuredSecret)
+    ? configuredSecret
+    : createHash("sha256").update(configuredSecret).digest("hex");
   const origin = new URL(process.env.APP_URL || "http://localhost");
   if (
     origin.protocol !== "https:" ||

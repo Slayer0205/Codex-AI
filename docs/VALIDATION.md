@@ -45,4 +45,6 @@ Bu muhitda BuildKit oddiy DNS orqali `proxy` hostname’ni topa olmadi. Platform
 
 Render’dagi TS2688 (`node`, `vite/client`) build xatosi uchun build buyrug‘i `npm ci --include=dev && npm run build` ga tuzatildi. Alohida toza checkout’da ikkala buyruq ham `NODE_ENV=production` bilan bajarildi: dependency install va production build o‘tdi. Render’dagi qayta deploy natijasi alohida tekshirilishi kerak.
 
+Hosting yaratgan webhook kalitida Telegram ruxsat bermaydigan belgilar bo‘lsa, kalit SHA-256 orqali mos formatga keltiriladi. Mock Telegram API bilan test ro‘yxatdan o‘tkazilgan kalitli webhook qabul qilinishini, boshqa kalit rad etilishini va qisqa kalitga hali ham ruxsat berilmasligini tekshirdi. `npm test` 24 / 24, lint va `NODE_ENV=production npm run build` o‘tdi. Haqiqiy hostingdagi qayta deploy va Telegram yetkazish natijasi alohida tekshirilishi kerak.
+
 README’dagi Hozirgi chegaralar bo‘limi qolgan ishlarni aniq belgilaydi. Demo auth production deb ko‘rsatilmagan. Haqiqiy integratsiyalar keyin ulanadi; kalitlar frontend bundle’da yoki repo’da saqlanmaydi. Environment draft saqlanishi deployment/publish bajarilganini anglatmaydi.
