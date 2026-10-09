@@ -43,4 +43,6 @@ Bu muhitda BuildKit oddiy DNS orqali `proxy` hostname’ni topa olmadi. Platform
 
 2026-10-09: Render Free + Neon konfiguratsiyasi qo‘shildi. `npm test` 23 testni o‘tkazdi; typecheck, lint va build ham o‘tdi. Yangi 4 test Render HTTPS manzili, public demo/ephemeral SQLite rad etilishi, bir portdagi API/webhook, webhook secret tekshiruvi va Telegram ID membership bog‘lanishini tekshiradi. Telegram tashqi API chaqiruvlari testda adapter orqali mock qilindi. Haqiqiy Render/Neon hisoblarida deploy va Telegram tashqi yetkazish ushbu tekshiruv bilan tasdiqlanmagan.
 
+Render’dagi TS2688 (`node`, `vite/client`) build xatosi uchun build buyrug‘i `npm ci --include=dev && npm run build` ga tuzatildi. Alohida toza checkout’da ikkala buyruq ham `NODE_ENV=production` bilan bajarildi: dependency install va production build o‘tdi. Render’dagi qayta deploy natijasi alohida tekshirilishi kerak.
+
 README’dagi Hozirgi chegaralar bo‘limi qolgan ishlarni aniq belgilaydi. Demo auth production deb ko‘rsatilmagan. Haqiqiy integratsiyalar keyin ulanadi; kalitlar frontend bundle’da yoki repo’da saqlanmaydi. Environment draft saqlanishi deployment/publish bajarilganini anglatmaydi.

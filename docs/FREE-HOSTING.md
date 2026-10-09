@@ -66,6 +66,7 @@ HTTPS Mini App tugmasi bot menyusiga avtomatik qo‘shiladi. BotFather’da doim
 - **Hisob hali bog‘lanmagan:** `--telegram` da botga yozayotgan hisobingizning shaxsiy raqamli ID’si berilganini tekshiring.
 - **Neon connection xatosi:** connection string’ni to‘liq kiriting va Neon loyihasi faol ekanini tekshiring.
 - **Webhook xatosi:** Render loglarini tekshiring; lokal bot terminali o‘chiq bo‘lsin. Sirlar yoki connection string bor loglarni chatga yubormang.
+- **Build’da `Cannot find type definition file for 'node'` yoki `'vite/client'`:** build buyrug‘i `npm ci --include=dev && npm run build` bo‘lsin. `NODE_ENV=production` oddiy `npm ci` orqali build uchun kerakli devDependencies paketlarini o‘tkazib yuboradi. Blueprint’ni eng yangi commit bilan sinxronlang.
 - **Bazadagi ma’lumot yo‘q:** Render’dagi `DATABASE_URL` admin yaratishda ishlatilgan aynan o‘sha Neon bazasi bo‘lsin. SQLite free Render diskida saqlanmaydi; ilova bunday sozlamani ishga tushirishdan oldin rad etadi.
 
 Render/Neon orqali haqiqiy tashqi deploy faqat shu xizmatlardagi hisoblar va maxfiy qiymatlar bilan tekshiriladi. Repo ichidagi lokal testlar muvaffaqiyatli bo‘lishi hosted xizmat allaqachon Live ekanini anglatmaydi.
